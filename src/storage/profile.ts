@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BabyProfile } from '../models/types';
+import {BabyProfile} from '../models/types';
+import {STORAGE_KEY} from './measurements'; // Import the key from measurements
 
 const PROFILE_KEY = 'growth/v1/profile';
 
@@ -11,6 +12,7 @@ export async function saveProfile(profile: BabyProfile) {
   }
 }
 
+// Load profile
 export async function loadProfile(): Promise<BabyProfile | null> {
   try {
     const raw = await AsyncStorage.getItem(PROFILE_KEY);
@@ -21,10 +23,11 @@ export async function loadProfile(): Promise<BabyProfile | null> {
   }
 }
 
+// Clear profile and all measurements
 export async function clearProfile() {
   try {
-    await AsyncStorage.removeItem(PROFILE_KEY);
+    await AsyncStorage.multiRemove([PROFILE_KEY, STORAGE_KEY]);
   } catch (e) {
-    console.error('Error clearing profile', e);
+    console.error('Error clearing profile and measurements', e);
   }
 }

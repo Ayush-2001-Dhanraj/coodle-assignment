@@ -8,6 +8,7 @@ import {saveProfile, loadProfile, clearProfile} from '../storage/profile';
 import {BabyProfile} from '../models/types';
 import {COLORS} from '../constants/colors';
 import {TouchableOpacity} from 'react-native';
+import {useBabyStore} from '../store/useBabyStore';
 
 const profileSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -68,7 +69,7 @@ const profileSchema = z.object({
 type ProfileFormData = z.infer<typeof profileSchema>;
 
 const ProfileScreen = () => {
-  const [profile, setProfile] = useState<BabyProfile | null>(null);
+  const {profile, setProfile: setStoreProfile} = useBabyStore();
   const [editing, setEditing] = useState(false);
 
   const {
@@ -86,7 +87,7 @@ const ProfileScreen = () => {
       const existing = await loadProfile();
       if (existing) {
         existing.birthDate = dayjs(existing.birthDate).format('YYYY-MM-DD');
-        setProfile(existing);
+        setStoreProfile(existing);
         reset(existing);
       }
     })();
@@ -98,8 +99,9 @@ const ProfileScreen = () => {
       ...data,
     };
     await saveProfile(newProfile);
-    setProfile(newProfile);
+    setStoreProfile(newProfile);
     setEditing(false);
+    reset(newProfile);
     Alert.alert('✅ Profile saved');
   };
 
@@ -111,7 +113,7 @@ const ProfileScreen = () => {
         style: 'destructive',
         onPress: async () => {
           await clearProfile();
-          setProfile(null);
+          setStoreProfile(null);
           reset({name: '', birthDate: '', gender: 'male'});
           Alert.alert('🗑️ Profile deleted');
         },

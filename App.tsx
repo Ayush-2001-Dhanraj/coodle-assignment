@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import {Alert} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import TimeLineScreen from './src/screens/TimeLineScreen';
@@ -6,15 +7,49 @@ import EntryScreen from './src/screens/EntryScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import {COLORS} from './src/constants/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {loadProfile} from './src/storage/profile';
+import dayjs from 'dayjs';
+import {useBabyStore} from './src/store/useBabyStore';
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+  const {
+    profile,
+    setProfile: setStoreProfile,
+    setForceProfile,
+    forceProfile,
+  } = useBabyStore();
+  const [loading, setLoading] = useState(true);
+
   const gender: 'male' | 'female' = 'male';
   const theme = {
     ...COLORS.common,
     ...(gender === 'male' ? COLORS.boys : COLORS.girls),
   };
+
+  useEffect(() => {
+    (async () => {
+      const existing = await loadProfile();
+
+      if (existing) {
+        existing.birthDate = dayjs(existing.birthDate).format('YYYY-MM-DD');
+        setStoreProfile(existing);
+        setForceProfile(false);
+      } else {
+        // no profile exists
+        setForceProfile(true);
+        Alert.alert(
+          'Profile Required',
+          'Please enter your baby’s details to continue.',
+        );
+      }
+
+      setLoading(false);
+    })();
+  }, [profile]);
+
+  if (loading) return null; // or a splash/loading screen
 
   return (
     <NavigationContainer>
@@ -53,9 +88,15 @@ export default function App() {
             return <Ionicons name={iconName} size={size} color={color} />;
           },
         })}>
-        <Tab.Screen name="Timeline" component={TimeLineScreen} />
-        <Tab.Screen name="Add Entry" component={EntryScreen} />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
+        {forceProfile ? (
+          <Tab.Screen name="Profile" component={ProfileScreen} />
+        ) : (
+          <>
+            <Tab.Screen name="Timeline" component={TimeLineScreen} />
+            <Tab.Screen name="Add Entry" component={EntryScreen} />
+            <Tab.Screen name="Profile" component={ProfileScreen} />
+          </>
+        )}
       </Tab.Navigator>
     </NavigationContainer>
   );
