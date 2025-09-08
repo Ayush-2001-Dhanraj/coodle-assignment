@@ -42,20 +42,20 @@ export default function App() {
           tabBarIcon: ({focused, color, size}) => {
             let iconName: string = '';
 
-            if (route.name === 'Home') {
+            if (route.name === 'Timeline') {
               iconName = focused ? 'home' : 'home-outline';
-            } else if (route.name === 'Profile') {
+            } else if (route.name === 'Add Entry') {
               iconName = focused ? 'create' : 'create-outline';
-            } else if (route.name === 'Settings') {
+            } else if (route.name === 'Profile') {
               iconName = focused ? 'person' : 'person-outline';
             }
 
             return <Ionicons name={iconName} size={size} color={color} />;
           },
         })}>
-        <Tab.Screen name="Home" component={TimeLineScreen} />
-        <Tab.Screen name="Profile" component={EntryScreen} />
-        <Tab.Screen name="Settings" component={ProfileScreen} />
+        <Tab.Screen name="Timeline" component={TimeLineScreen} />
+        <Tab.Screen name="Add Entry" component={EntryScreen} />
+        <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
