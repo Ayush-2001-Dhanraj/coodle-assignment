@@ -24,18 +24,24 @@ import {GrowthMeasurement} from '../models/types';
 import {useBabyStore} from '../store/useBabyStore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import {calculateWeightPercentile} from '../utils/percentile';
+import {RootStackParamList} from '../../App';
+import {RouteProp, useRoute} from '@react-navigation/native';
 dayjs.extend(isSameOrAfter);
 
 type Mode = 'new' | 'view' | 'edit';
 
-const EntryScreen = () => {
-  const {profile, forceProfile} = useBabyStore();
+type EntryScreenRouteProp = RouteProp<RootStackParamList, 'Add Entry'>;
 
+const EntryScreen = () => {
+  const route = useRoute<EntryScreenRouteProp>();
+  const initialDate = route.params?.date ?? '';
+
+  const {profile, forceProfile} = useBabyStore();
   const [existingEntry, setExistingEntry] = useState<GrowthMeasurement | null>(
     null,
   );
   const [mode, setMode] = useState<Mode>('new');
-  const [dateEntered, setDateEntered] = useState<string>(''); // Tracks user's date input
+  const [dateEntered, setDateEntered] = useState<string>(initialDate); // Tracks user's date input
   const [isValidDate, setIsValidDate] = useState(false); // Tracks if date input is valid
   const [loadingEntry, setLoadingEntry] = useState(false);
 

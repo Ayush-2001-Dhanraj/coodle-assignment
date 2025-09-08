@@ -1,7 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Alert} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {
+  createBottomTabNavigator,
+  BottomTabNavigationProp,
+} from '@react-navigation/bottom-tabs';
 import TimeLineScreen from './src/screens/TimeLineScreen';
 import EntryScreen from './src/screens/EntryScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
@@ -10,8 +13,16 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {loadProfile} from './src/storage/profile';
 import dayjs from 'dayjs';
 import {useBabyStore} from './src/store/useBabyStore';
+import {useGrowthStore} from './src/store/useGrowthStore';
 
-const Tab = createBottomTabNavigator();
+export type RootStackParamList = {
+  Timeline: undefined;
+  'Add Entry': {date?: string};
+  Profile: undefined;
+};
+
+const Tab = createBottomTabNavigator<RootStackParamList>();
+export type NavigationProp = BottomTabNavigationProp<RootStackParamList>;
 
 export default function App() {
   const {
@@ -20,6 +31,8 @@ export default function App() {
     setForceProfile,
     forceProfile,
   } = useBabyStore();
+  const {loadAll: loadMeasurements} = useGrowthStore();
+
   const [loading, setLoading] = useState(true);
 
   const gender: 'male' | 'female' = 'male';
@@ -45,11 +58,13 @@ export default function App() {
         );
       }
 
+      loadMeasurements();
+
       setLoading(false);
     })();
   }, [profile]);
 
-  if (loading) return null; // or a splash/loading screen
+  if (loading) return null;
 
   return (
     <NavigationContainer>

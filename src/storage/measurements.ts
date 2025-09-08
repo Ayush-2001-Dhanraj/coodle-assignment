@@ -16,7 +16,7 @@ export const loadMeasurements = async (): Promise<GrowthMeasurement[]> => {
 };
 
 // Save all measurements
-const saveAll = async (measurements: GrowthMeasurement[]) => {
+export const saveAll = async (measurements: GrowthMeasurement[]) => {
   try {
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(measurements));
   } catch (error) {
