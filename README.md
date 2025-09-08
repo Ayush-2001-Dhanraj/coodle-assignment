@@ -1,97 +1,156 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+<p align="center">
+  <b>Ayush Dhanraj</b><br/>
+  📧 <a href="mailto:dhanrajaayush123@gmail.com">dhanrajaayush123@gmail.com</a> | 
+  💻 <a href="https://github.com/Ayush-2001-Dhanraj">GitHub</a> | 
+  🔗 <a href="https://www.linkedin.com/in/ayush-d-1759461a1/">LinkedIn</a>
+</p>
 
-# Getting Started
+# Bu-Bu Ba-Ba: Baby Growth Tracker App - Ayush Dhanraj
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+A React Native application to track a baby’s growth measurements including weight, height, and head circumference. Built with TypeScript, Zustand for state management, and React Navigation.
 
-## Step 1: Start Metro
+---
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## Features
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+- **Multi-Screen Navigation**
+  - Bottom tab navigation with **Timeline**, **Add Entry**, and **Profile** screens.
+  - Dynamic routing depending on whether a baby profile exists.
 
-```sh
-# Using npm
-npm start
+- **Baby Profile Management**
+  - Create, view, and edit baby profiles.
+  - Birth date is validated for growth entry purposes.
 
-# OR using Yarn
-yarn start
-```
+- **Growth Measurement Tracking**
+  - Add, view, edit, and delete growth measurements.
+  - Measurements include **weight**, **height**, and **head circumference**.
+  - Unit conversion between **kg/lb** and **cm/in**.
+  - Validation for:
+    - Date format (`YYYY-MM-DD`)
+    - Date not in the future
+    - Date not before baby’s birth
+    - Positive numeric values for measurements
 
-## Step 2: Build and run your app
+- **Dynamic Forms**
+  - Uses `react-hook-form` with `zod` for type-safe validation.
+  - Conditional rendering based on mode:
+    - **New Entry**, **View Entry**, **Edit Entry**.
+  - Switches for unit selection with automatic conversion.
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+- **Data Persistence**
+  - Async storage for profile and measurements.
+  - Automatically loads existing data on app start.
+  - Handles missing or future data gracefully.
 
-### Android
+- **Growth Analysis**
+  - Calculates weight percentile using baby’s age in months.
+  - Updates measurements dynamically when units are switched.
 
-```sh
-# Using npm
-npm run android
+---
 
-# OR using Yarn
-yarn android
-```
+## Tech Stack
 
-### iOS
+- **React Native**  
+- **TypeScript**  
+- **Zustand** (for state management)  
+- **React Navigation** (Bottom Tabs)  
+- **React Hook Form + Zod** (form validation)  
+- **Day.js** (date handling)  
+- **Async Storage** (local persistence)  
+- **Custom Utility Functions** for growth calculations
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+---
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+## Screenshots
 
-```sh
-bundle install
-```
+<table>
+  <tr>
+    <td><img width="180" src="https://github.com/user-attachments/assets/62068338-66ad-4046-b9fe-6497331da597" /></td>
+    <td><img width="180" src="https://github.com/user-attachments/assets/5ff71124-b778-4bda-9397-77b6ba47f3d3" /></td>
+    <td><img width="180" src="https://github.com/user-attachments/assets/34765e4d-9d4c-4cc0-a50a-be22929a5a12" /></td>
+  </tr>
+  <tr>
+    <td><img width="180" src="https://github.com/user-attachments/assets/ae4bc3a7-5194-470a-a079-6b995773a672" /></td>
+    <td><img width="180" src="https://github.com/user-attachments/assets/3645a9a7-b6ab-4d1c-b9ec-30ea05ad903b" /></td>
+    <td><img width="180" src="https://github.com/user-attachments/assets/6c8e9aef-b3e1-41c2-9848-bb74bc8c9617" /></td>
+  </tr>
+  <tr>
+    <td><img width="180" src="https://github.com/user-attachments/assets/624f99c7-cb09-4c20-932f-1b1f10c844f1" /></td>
+    <td><img width="180" src="https://github.com/user-attachments/assets/b1dd687a-3b63-42e0-818c-947fa78bd4a0" /></td>
+    <td><img width="180" src="https://github.com/user-attachments/assets/8a4ff273-55fb-41f3-81d4-f5929896a009" /></td>
+  </tr>
+  <tr>
+    <td><img width="180" src="https://github.com/user-attachments/assets/ab9d58c9-d66b-478b-a073-c8bfbea58567" /></td>
+    <td><img width="180" src="https://github.com/user-attachments/assets/1a6328eb-1c4e-4781-bce4-0e4759819914" /></td>
+    <td><img width="180" src="https://github.com/user-attachments/assets/8fcb7f63-c5e6-4d00-9956-c1c766cc1d5c" /></td>
+  </tr>
+</table>
 
-Then, and every time you update your native dependencies, run:
+---
 
-```sh
-bundle exec pod install
-```
+## Highlights
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+- **WHO Growth Percentiles**  
+  - Used Python Jupyter Notebook to convert Excel percentile data from WHO's website into JSON format for use in the app.
 
-```sh
-# Using npm
-npm run ios
+- **Development Environment**  
+  - Built and tested on **Pixel 2 emulator, API 33**.
 
-# OR using Yarn
-yarn ios
-```
+- **Data Handling**  
+  - JSON data is integrated into the app for calculating weight percentiles based on age and gender.
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+- **Platform & Device Optimization**  
+  - Ensures correct rendering and performance on Pixel 2 specifications.
+ 
+---
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+## Notes
 
-## Step 3: Modify your app
+- A baby profile is required before adding growth measurements. Users are prompted to create one if none exists.
+- Supports dynamic unit switching for weight, height, and head circumference, with automatic conversion.
+- Robust validation for dates:
+  - Must be in `YYYY-MM-DD` format.
+  - Cannot be in the future.
+  - Cannot be before the baby’s birth date.
+- Growth entries can be **added**, **viewed**, **edited**, or **deleted**.
+- Weight percentiles are calculated based on the baby’s age in months.
+- Designed for smooth UX with conditional rendering depending on entry mode (new, view, edit).
+- Data is persisted locally using AsyncStorage and loaded automatically on app start.
+- Handles edge cases such as missing or future dates gracefully.
 
-Now that you have successfully run the app, let's make changes!
+- ---
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+## Folder Structure
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+<img width="318" height="839" alt="Screenshot 2025-09-08 224110" src="https://github.com/user-attachments/assets/745d7efb-dea1-4ffa-b76e-4f4c9dc29a74" />
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+## 🚀 Things to Improve
 
-## Congratulations! :tada:
+- **Profile Updates Impact**  
+  - If the user updates **gender** or **date of birth**, growth percentiles should be recalculated automatically.
 
-You've successfully run and modified your React Native App. :partying_face:
+- **Graph Enhancements**  
+  - Add support for **editing and deleting entries directly from the graph view**.
 
-### Now what?
+- **More Growth Indicators**  
+  - Currently only **Weight-for-Age** percentiles are implemented.  
+  - Future scope: add **Height-for-Age**, **Head Circumference-for-Age**, and **Weight-for-Height** charts.
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+- **Testing**  
+  - Add unit tests for **percentile calculation utility** and other core functions.
 
-# Troubleshooting
+- **UI/UX Improvements**  
+  - Improve chart legend rendering (separate styles for trendline vs. child points).  
+  - Provide smoother animations when switching units or tabs.  
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+- **Data Export/Backup**  
+  - Option to export growth data (CSV/JSON) or sync with cloud storage.
 
-# Learn More
+---
 
-To learn more about React Native, take a look at the following resources:
+## Contact
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+- **Name:** Ayush Dhanraj  
+- **Email:** dhanrajaayush123@gmail.com  
+- **GitHub:** [github.com/Ayush-2001-Dhanraj]([https://github.com/ayushdhanraj](https://github.com/Ayush-2001-Dhanraj]))  
+- **LinkedIn:** [linkedin.com/in/ayush-d-1759461a1]([https://linkedin.com/in/ayushdhanraj](https://www.linkedin.com/in/ayush-d-1759461a1/]))
