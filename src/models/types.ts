@@ -16,3 +16,16 @@ export interface GrowthMeasurement {
   heightPercentile?: number;
   headPercentile?: number;
 }
+
+export interface AgePercentiles {
+  [percentile: string]: number;
+}
+
+export interface GenderGrowthData {
+  [ageInMonths: string]: AgePercentiles;
+}
+
+export interface GrowthChartData {
+  boys: GenderGrowthData;
+  girls: GenderGrowthData;
+}

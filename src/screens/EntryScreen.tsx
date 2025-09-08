@@ -23,6 +23,7 @@ import {COLORS} from '../constants/colors';
 import {GrowthMeasurement} from '../models/types';
 import {useBabyStore} from '../store/useBabyStore';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import {calculateWeightPercentile} from '../utils/percentile';
 dayjs.extend(isSameOrAfter);
 
 type Mode = 'new' | 'view' | 'edit';
@@ -128,16 +129,16 @@ const EntryScreen = () => {
 
   useEffect(() => {
     const validateAndLoad = async () => {
-      if (!dayjs(dateEntered, 'YYYY-MM-DD', true).isValid()) {
-        setIsValidDate(false);
-        setExistingEntry(null);
-        setMode('new');
-        return;
-      }
-
       if (
-        profile?.birthDate &&
-        dayjs(dateEntered).isBefore(dayjs(profile.birthDate), 'day')
+        !dayjs(dateEntered, 'YYYY-MM-DD', true).isValid() ||
+        (profile?.birthDate &&
+          dayjs(dateEntered).isBefore(dayjs(profile.birthDate), 'day')) ||
+        dayjs(dateEntered).isAfter(dayjs(), 'day') ||
+        (profile?.birthDate &&
+          dayjs(dateEntered).isAfter(
+            dayjs(profile.birthDate).add(2, 'year'),
+            'day',
+          ))
       ) {
         setIsValidDate(false);
         setExistingEntry(null);
@@ -190,15 +191,23 @@ const EntryScreen = () => {
     const heightCm = heightUnit === 'cm' ? data.height : data.height * 2.54;
     const headCm = headUnit === 'cm' ? data.head : data.head * 2.54;
 
+    const ageInDays = profile?.birthDate
+      ? dayjs(data.date).diff(dayjs(profile.birthDate), 'day')
+      : 0;
+    const ageInMonths = Math.floor(ageInDays / 30.4375); // avg month length
+
+    const weightPercentile = profile
+      ? calculateWeightPercentile(ageInMonths, weightKg, profile.gender)
+      : null;
+
     const measurement: GrowthMeasurement = {
       id: existingEntry ? existingEntry.id : Date.now().toString(),
       date: data.date,
-      ageInDays: profile?.birthDate
-        ? dayjs(data.date).diff(dayjs(profile.birthDate), 'day')
-        : 0,
+      ageInDays,
       weightKg,
       heightCm,
       headCm,
+      weightPercentile: weightPercentile ?? undefined,
     };
 
     if (existingEntry) {
@@ -273,9 +282,7 @@ const EntryScreen = () => {
           onChangeText={setDateEntered}
         />
         {!isValidDate && dateEntered ? (
-          <Text style={styles.errorText}>
-            Invalid date or before baby's birthdate
-          </Text>
+          <Text style={styles.errorText}>Invdalid Date choice!!</Text>
         ) : null}
       </View>
 
